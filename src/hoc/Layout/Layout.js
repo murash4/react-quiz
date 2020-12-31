@@ -1,11 +1,11 @@
 import { Component } from 'react'
-import './Layout.scss'
+import classes from './Layout.module.scss'
 
 class Layout extends Component {
 	render () {
 		return (
-			<div>
-				<main>
+			<div className={ classes.Layout }>
+				<main className={ classes['Layout-main'] }>
 					{ this.props.children }
 				</main>
 			</div>
