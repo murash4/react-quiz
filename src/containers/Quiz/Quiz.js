@@ -6,22 +6,32 @@ class Quiz extends Component {
 	state = {
 		quiz: [
 			{
+				question: 'Какого цвета небо?',
+				rightAnswerId: 2,
 				answers: [
 					{
-						text: 'Вопрос 1'
+						id: 1,
+						text: 'Черный'
 					},
 					{
-						text: 'Вопрос 2'
+						id: 2,
+						text: 'Синий'
 					},
 					{
-						text: 'Вопрос 3'
+						id: 3,
+						text: 'Красный'
 					},
 					{
-						text: 'Вопрос 4'
+						id: 4,
+						text: 'Зеленый'
 					}
 				]
 			}
 		]
+	}
+
+	onAnswerClickHandler = answerId => {
+		console.log(answerId)
 	}
 
 	render () {
@@ -30,7 +40,9 @@ class Quiz extends Component {
 				<div className={ classes['Quiz__wrapper'] }>
 					<h1 className={ classes['Quiz__h1'] }>Ответьте на все вопросы</h1>
 					<ActiveQuiz
+						question={ this.state.quiz[0].question }
 						answers={ this.state.quiz[0].answers }
+						onAnswerClick={ this.onAnswerClickHandler }
 					/>
 				</div>
 			</div>
