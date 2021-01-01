@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import classes from './Quiz.module.scss'
+import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
 
 class Quiz extends Component {
 	state = {
@@ -9,7 +10,10 @@ class Quiz extends Component {
 	render () {
 		return (
 			<div className={ classes.Quiz }>
-				<h1 className={ classes['Quiz__h1'] }>Quiz</h1>
+				<div className={ classes['Quiz__wrapper'] }>
+					<h1 className={ classes['Quiz__h1'] }>Quiz</h1>
+					<ActiveQuiz />
+				</div>
 			</div>
 		)
 	}
