@@ -5,14 +5,15 @@ import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
 
 class Quiz extends Component {
 	state = {
-		isFinished: true,
+		results: {},
+		isFinished: false,
 		activeQuestion: 0,
 		answerState: null,
 		quiz: [
 			{
 				question: 'Какого цвета небо?',
 				rightAnswerId: 2,
-				id: 1,
+				id: 0,
 				answers: [
 					{
 						id: 1,
@@ -35,7 +36,7 @@ class Quiz extends Component {
 			{
 				question: 'В каком году основали Санкт-Петербург',
 				rightAnswerId: 3,
-				id: 2,
+				id: 1,
 				answers: [
 					{
 						id: 1,
@@ -73,9 +74,14 @@ class Quiz extends Component {
 		}
 
 		const question = this.state.quiz[this.state.activeQuestion]
+		const results = this.state.results
 
 		if (question.rightAnswerId === answerId) {
+			if (!results[this.state.activeQuestion]) {
+				results[question.id] = 'success'
+			}
 			this.setState({
+				results,
 				answerState: {
 					[answerId]: 'success'
 				}
@@ -98,12 +104,23 @@ class Quiz extends Component {
 				clearTimeout(timeout)
 			}, 1000)
 		} else {
+			results[question.id] = 'error'
 			this.setState({
+				results,
 				answerState: {
 					[answerId]: 'error'
 				}
 			})
 		}
+	}
+
+	retryHandler = () => {
+		this.setState({
+			results: {},
+			isFinished: false,
+			activeQuestion: 0,
+			answerState: null,
+		})
 	}
 
 	render () {
@@ -112,7 +129,11 @@ class Quiz extends Component {
 				<div className={ classes['Quiz__wrapper'] }>
 					{
 						this.state.isFinished
-							? <FinishedQuiz />
+							? <FinishedQuiz
+									results={ this.state.results }
+									quiz={ this.state.quiz }
+									onRetry={ this.retryHandler }
+							/>
 							: <React.Fragment>
 									<h1 className={ classes['Quiz__h1'] }>Ответьте на все вопросы</h1>
 
