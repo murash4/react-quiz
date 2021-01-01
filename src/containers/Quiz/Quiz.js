@@ -61,6 +61,15 @@ class Quiz extends Component {
 	}
 
 	onAnswerClickHandler = answerId => {
+		// защита от повторного ответа в случае уже выбранного правильного ответа
+		if (this.state.answerState) {
+			const key = Object.keys(this.state.answerState)[0]
+
+			if (this.state.answerState[key] === 'success') {
+				return
+			}
+		}
+
 		const question = this.state.quiz[this.state.activeQuestion]
 
 		if (question.rightAnswerId === answerId) {
