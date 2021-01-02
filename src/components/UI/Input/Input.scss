@@ -1,0 +1,31 @@
+.Input {
+  margin-bottom: 15px;
+}
+
+.Input__label {
+  display: block;
+  padding: 0;
+  margin-bottom: 3px;
+  font-weight: bold;
+
+  .invalid & {
+    color: #f01f30;
+  }
+}
+
+.Input__field {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px;
+  margin: 0 0 5px;
+  border: 1px solid #bebebe;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.Input__error {
+  font-weight: bold;
+  font-size: 12px;
+  color: #f01f30;
+}
