@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import './QuizCreator.scss'
 import Button from '../../components/UI/Button/Button'
-import { createControl } from '../../form/formFramework'
+import { createControl, validate, validateForm } from '../../form/formFramework'
 import Input from '../../components/UI/Input/Input'
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary'
 import Select from '../../components/UI/Select/Select'
@@ -33,6 +33,7 @@ export default class QuizCreator extends Component {
 	state = {
 		quiz: [],
 		rightAnswerId: 1,
+		isFormValid: false,
 		formControls: creatFormControls()
 	}
 
@@ -40,11 +41,27 @@ export default class QuizCreator extends Component {
 		event.preventDefault()
 	}
 
-	addQuestionHandler = () => {}
+	addQuestionHandler = event => {
+		event.preventDefault()
+	}
 
 	createQuizHandler = () => {}
 
-	onChangeHandler = (value, controlName) => {}
+	onChangeHandler = (value, controlName) => {
+		const formControls = { ...this.state.formControls }
+		const control = { ...formControls[controlName] }
+
+		control.value = value
+		control.touched = true
+		control.valid = validate(control.value, control.validation)
+
+		formControls[controlName] = control
+
+		this.setState({
+			isFormValid: validateForm(formControls),
+			formControls
+		})
+	}
 
 	renderControls () {
 		return Object.keys(this.state.formControls).map((controlName, index) => {
@@ -100,10 +117,12 @@ export default class QuizCreator extends Component {
 
 						<Button
 							type="primary"
+							disabled={ !this.state.isFormValid }
 							onClick={ this.addQuestionHandler }
 						>Добавить вопрос</Button>
 						<Button
 							type="success"
+							disabled={ !this.state.quiz.length }
 							onClick={ this.createQuizHandler }
 						>Создать тест</Button>
 					</form>
