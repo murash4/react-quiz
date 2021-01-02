@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import "./QuizList.scss"
 import { NavLink } from 'react-router-dom'
+import axios from 'axios'
 
 export default class QuizList extends Component {
 	renderQuizes () {
