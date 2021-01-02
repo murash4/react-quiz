@@ -11,6 +11,7 @@ function App() {
       <Switch>
         <Route
           path="/"
+          exact
           component={ QuizList }
         />
 
