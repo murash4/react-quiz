@@ -1,8 +1,39 @@
 import { Component } from 'react'
 import './QuizCreator.scss'
 import Button from '../../components/UI/Button/Button'
+import { createControl } from '../../form/formFramework'
+import Input from '../../components/UI/Input/Input'
+import Auxiliary from '../../hoc/Auxiliary/Auxiliary'
+
+function createOptionControl (number) {
+	return createControl({
+			id: number,
+			label: `Вариант ${number}`,
+			errorMessage: 'Заначение не может быть пустым'
+		}, { required: true }
+	)
+}
+
+function creatFormControls () {
+	return {
+		question: createControl({
+				label: 'Введите вопрос',
+				errorMessage: 'Вопрос не может быть пустым'
+			}, { required: true }
+		),
+		option1: createOptionControl(1),
+		option2: createOptionControl(2),
+		option3: createOptionControl(3),
+		option4: createOptionControl(4)
+	}
+}
 
 export default class QuizCreator extends Component {
+	state = {
+		quiz: [],
+		formControls: creatFormControls()
+	}
+
 	submitHandler = event => {
 		event.preventDefault()
 	}
@@ -10,6 +41,29 @@ export default class QuizCreator extends Component {
 	addQuestionHandler = () => {}
 
 	createQuizHandler = () => {}
+
+	onChangeHandler = (value, controlName) => {}
+
+	renderControls () {
+		return Object.keys(this.state.formControls).map((controlName, index) => {
+			const control = this.state.formControls[controlName]
+
+			return (
+				<Auxiliary key={ controlName + index }>
+					<Input
+						value={ control.value }
+						valid={ control.valid }
+						touched={ control.touched }
+						label={ control.label }
+						errorMessage={ control.errorMessage }
+						shouldValidate={ !!control.validation }
+						onChange={ event => this.onChangeHandler(event.target.value, controlName) }
+					/>
+					{ index === 0 ? <hr /> : null }
+				</Auxiliary>
+			)
+		})
+	}
 
 	render () {
 		return (
@@ -20,12 +74,7 @@ export default class QuizCreator extends Component {
 						className="QuizCreator__form"
 						onSubmit={ this.submitHandler }
 					>
-						<input type="text"/>
-						<hr />
-						<input type="text"/>
-						<input type="text"/>
-						<input type="text"/>
-						<input type="text"/>
+						{ this.renderControls() }
 						<select name="" id=""></select>
 						<Button
 							type="primary"
